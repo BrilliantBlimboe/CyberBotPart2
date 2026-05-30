@@ -1,0 +1,29 @@
+name: Build CyberBot Part 2
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET 6
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore CyberBotPart2.csproj
+
+    - name: Build project
+      run: dotnet build CyberBotPart2.csproj --configuration Release --no-restore
+
+    - name: Publish release build
+      run: dotnet publish CyberBotPart2.csproj --configuration Release --output ./publish
